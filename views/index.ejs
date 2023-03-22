@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=h1, initial-scale=1.0">
+    <title>Favorite Stars</title>
+    <link rel="stylesheet" href="../public/normalize.css">
+    <link rel="stylesheet" type="text/css" href="../public/style.css">
+</head>
+<body>
+    <h1 class="title">Select a Date</h1>
+    <form action="/nasaData" method="POST">
+        <label for="date-input">Date:</label>
+        <input type="date" id="date-input" name="date" id="userInput" required />
+        <button id="submitDate" type="submit">Submit</button>
+    </form>
+
+    
+    <ul class="planetList">
+        <% for( let i = 0; i < planet.length; i++ ) { %>
+            <li class=""planetData">
+                <span><%= planet[i].title %> </span>
+                <span><%= planet[i].userDate %> </span>
+                <img src="<%= planet[i].img %>"  alt="planet image">
+                <p><%= planet[i].explanation %> </p>
+
+                <form action="/nasaData" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="id" value="<%= planet[i]['_id'] %>" >
+                    <button id="delete">Remove APOD</button>
+                </form>
+            </li>
+        <% } %>
+    </ul>
+
+</body>
+</html>
