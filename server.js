@@ -1,23 +1,31 @@
 const express = require('express')
-const app = express()
-
-const PORT = process.env.PORT || 3000
-
+const dotenv = require('dotenv')
 const bodyParser = require('body-parser')
-
-
 const MongoClient = require('mongodb').MongoClient 
-
+/**
+ * node-fetch 
+ * Node fecth will allows us to use fetch 
+ * on the server side. 
+ * the version must be node-fecth@2
+ */
+const fetch = require('node-fetch')
+const methodOverride = require('method-override')
 
 /**
- * proces an environment so sensitive data can be omitted from the 
- * publilc 
+ *  we want to load the enviroment 
+ * variables before we start doing things
  */
-const dotenv = require('dotenv')
-dotenv.config()
+dotenv.config() 
+
+/**Setting up server 
+ * 
+*/
+const PORT = process.env.PORT || 3000 // want the port 
+const app = express()
 
 
-/** 
+/** DATABASE
+ * 
  * Setting up and connecting to mongodb 
  * mongodb url should be placed inside
  * .env to protect it
@@ -33,22 +41,12 @@ const MONGODB_URL = process.env.MONGODB_URL
 const client = new MongoClient(MONGODB_URL)
 if(!MONGODB_URL) throw new Error('WHERE YOUR LINK AT')
 
-/**
- * node-fetch 
- * Node fecth will allows us to use fetch 
- * on the server side. 
- * the version must be node-fecth@2
- */
-const fetch = require('node-fetch')
-const methodOverride = require('method-override')
-
 const { MongoDBNamespace, ObjectId } = require ('mongodb')
-
 
 client.connect().then( client => { 
     console.log( 'connectd to the client' )
     const db = client.db( 'NasaAPI' )
-    const nasaCollection = db.collection( 'nasaData' )
+    const nasaCollection = db.collection('nasaData')
 
     /**
      * use ejs and set it as the main view engine 
@@ -60,7 +58,7 @@ client.connect().then( client => {
      * 
      * 'ejs' the view engine
      */
-    app.set( 'view engine', 'ejs' )
+    app.set('view engine', 'ejs')
 
     /**
      * app.use() 
@@ -71,13 +69,16 @@ client.connect().then( client => {
      * "express.static( 'public' )"
      * finds where"
      * 
+     * so you dont need "../public/"(filename)
+     * for pathing 
+     * 
      * although we are using app.use ()
      * app.use( express.static ( 'public' ) ) is not 
      * a middle
      */
-    app.use(express.static( 'public' ) )
+    app.use(express.static('public'))
 
-    /**
+    /** Middlewares
      * app.use() method lets us use middlewares 
      * bodyParser help tidy up the request object 
      * urlencoded tells the bodyparser to extract data
@@ -89,7 +90,7 @@ client.connect().then( client => {
      * access to the 'request', 'response', and 'next'
      * object.
      */
-    app.use(bodyParser.urlencoded( { extended: true } ) )
+    app.use(bodyParser.urlencoded({extended: true}))
 
     /**
      * Method override
@@ -102,7 +103,10 @@ client.connect().then( client => {
         }
     }))
 
-    app.get('/', ( req, res ) => {
+    /**Handlers
+     * 
+     */
+    app.get('/', (req, res) => {
         /**
          * Encapsulating the res.render(...)
          * 
@@ -121,7 +125,7 @@ client.connect().then( client => {
              */
             res.render('index.ejs', {
                 planet: results
-            } )
+            })
         })
     })
 
@@ -131,8 +135,7 @@ client.connect().then( client => {
      * are provided, then app.post will do all of the things 
      * inside it. 
      */
-
-    app.post( '/nasaData', async ( req, res ) => {
+    app.post('/nasaData', async (req, res) => {
         console.log("hi")
         const apiKey = process.env.API_KEY
         const selectedDate = req.body.date
@@ -156,26 +159,23 @@ client.connect().then( client => {
          * insertOne will insert the object provided to 
          * our mongoDB database, specifically in nasaCollection
          */
-
         nasaCollection.insertOne(obj)
-        .then ( () => res.redirect( '/' ) )
-        .catch( error => console.error( error ) )
-    } )
+            .then (() => res.redirect('/'))
+            .catch(error => console.error(error))
+    })
 
-    app.delete('/nasaData', async ( req, res ) => { 
+    app.delete('/nasaData', async (req, res) => { 
         nasaCollection.deleteOne( {
             _id: new ObjectId(req.body.id)
-        } )
+        })
         .then (result => {
-            console.log( `Deleted ObjectID ( ${req.body.id} ) ` )
+            console.log(`Deleted ObjectID ( ${req.body.id} )`)
             res.redirect('/')
         })
-        .catch( error => console.error( `Error: ${error}` ) )
-    } )
+        .catch(error => console.error(`Error: ${error}`))
+    })
 
     app.listen( PORT, () => {
         console.log('yo mama')
-    } )
-
+    })
 })
-
