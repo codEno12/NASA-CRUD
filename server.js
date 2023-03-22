@@ -2,6 +2,7 @@ const express = require('express')
 const dotenv = require('dotenv')
 const bodyParser = require('body-parser')
 const MongoClient = require('mongodb').MongoClient 
+const { MongoDBNamespace, ObjectId } = require ('mongodb')
 /**
  * node-fetch 
  * Node fecth will allows us to use fetch 
@@ -23,7 +24,6 @@ dotenv.config()
 const PORT = process.env.PORT || 3000 // want the port 
 const app = express()
 
-
 /** DATABASE
  * 
  * Setting up and connecting to mongodb 
@@ -38,10 +38,8 @@ const app = express()
  * 'intances' (branch) of the object
  */
 const MONGODB_URL = process.env.MONGODB_URL
+if (!MONGODB_URL) throw new Error('WHERE YOUR LINK AT')
 const client = new MongoClient(MONGODB_URL)
-if(!MONGODB_URL) throw new Error('WHERE YOUR LINK AT')
-
-const { MongoDBNamespace, ObjectId } = require ('mongodb')
 
 client.connect().then( client => { 
     console.log( 'connectd to the client' )
