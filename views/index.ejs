@@ -7,33 +7,35 @@
     <title>Favorite Stars</title>
     <link rel="stylesheet" href="/output.css">
 </head>
-<body>
-    <h1 class="text-3xl font-bold underline text-blue-400">
-        Hello world!
-    </h1>
-    <h1 class="text-5xl text-blue">Select a Date</h1>
-    <form action="/nasaData" method="POST">
-        <label for="date-input">Date:</label>
-        <input type="date" id="date-input" name="date" id="userInput" required />
-        <button id="submitDate" type="submit">Submit</button>
-    </form>
+<body class="max-w-100%">
+    <main class="flex p-1">
+        <section class="top w-1/2">
+            <h1 class="text-5xl text-blue-400">Select a Date</h1>
+            <form action="/nasaData" method="POST">
+                <label for="date-input">Date:</label>
+                <input type="date" id="date-input" name="date" id="userInput" required />
+                <button id="submitDate" type="submit">Submit</button>
+            </form>
+        </section>
+    
+        <section class="bottom w-1/2">
+            <ul class="planetList">
+                <% for( let i = 0; i < planet.length; i++ ) { %>
+                    <li class="planetData max-w-md">
+                        <span><%= planet[i].title %> </span>
+                        <span><%= planet[i].userDate %> </span>
+                        <img src="<%= planet[i].img %>"  alt="planet image">
+                        <p><%= planet[i].explanation %> </p>
+                        <form action="/nasaData" method="POST">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="id" value="<%= planet[i]['_id'] %>" >
+                            <button id="delete">Remove APOD</button>
+                        </form>
+                    </li>
+                <% } %>
+            </ul>
+        </section>
 
-    <ul class="planetList">
-        <% for( let i = 0; i < planet.length; i++ ) { %>
-            <li class="planetData">
-                <span><%= planet[i].title %> </span>
-                <span><%= planet[i].userDate %> </span>
-                <img src="<%= planet[i].img %>"  alt="planet image">
-                <p><%= planet[i].explanation %> </p>
-
-                <form action="/nasaData" method="POST">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="hidden" name="id" value="<%= planet[i]['_id'] %>" >
-                    
-                    <button id="delete">Remove APOD</button>
-                </form>
-            </li>
-        <% } %>
-    </ul>
+</main>
 </body>
 </html>

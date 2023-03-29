@@ -517,28 +517,8 @@ video {
 
 /* utility styles */
 
-.m-1 {
-  margin: 0.25rem;
-}
-
-.flex {
-  display: flex;
-}
-
 .hidden {
   display: none;
-}
-
-.w-1\/2 {
-  width: 50%;
-}
-
-.max-w-md {
-  max-width: 28rem;
-}
-
-.p-1 {
-  padding: 0.25rem;
 }
 
 .text-3xl {
@@ -558,11 +538,6 @@ video {
 .text-red-400 {
   --tw-text-opacity: 1;
   color: rgb(248 113 113 / var(--tw-text-opacity));
-}
-
-.text-blue-400 {
-  --tw-text-opacity: 1;
-  color: rgb(96 165 250 / var(--tw-text-opacity));
 }
 
 .underline {
