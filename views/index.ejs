@@ -6,36 +6,58 @@
     <meta name="viewport" content="width=h1, initial-scale=1.0">
     <title>Favorite Stars</title>
     <link rel="stylesheet" href="/output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Quantico&family=Raleway+Dots&family=Roboto+Mono:wght@200;700&display=swap" rel="stylesheet">
 </head>
-<body class="max-w-100%">
-    <main class="flex p-1">
-        <section class="top w-1/2">
-            <h1 class="text-5xl text-blue-400">Select a Date</h1>
+<body>
+        <main class="sm: relative text-center justify-content: center p-4" >
+            <div class="flex item-center justify-center"> 
+                <img class="h-10 w-auto" src="images/NASA_logo.svg.png" alt="nasa logo">
+                <h1 class="font-orbitron text-4xl">NASA APOD</h1>
+            </div>
+            <nav class="sm: bg-gray-900 text-white text-sm  px-4 py-3 border-b border-gray-800 rounded-md mt-4 mb-4 font-orbitron">
+                <ul class="flex item-center justify-evenly">
+                    <li><a class=" hover:text-gray-500 border-b border-white-100" href="#">About</a></li>
+                    <li><a class=" hover:text-gray-500 border-b border-white-100" href="#">Get Started</a></li>
+                    <li><a class=" hover:text-gray-500 border-b border-white-100" href="#">Collection</a></li>
+                </ul>
+            </nav>
+            <section class="flex">
+                <h2 class="font-quantico text-lg border-r border-gray-500 text-center p-3" >How To Use</h2>
+                <p class="font-roboto-mono text-left text-sm p-3">Select a date that is not in the future or too far behind. This is not a time machine. Hit that submit button and get your APOD.</p>
+            </section>
+            <section class="flex justify-center my-4">
             <form action="/nasaData" method="POST">
-                <label for="date-input">Date:</label>
-                <input type="date" id="date-input" name="date" id="userInput" required />
-                <button id="submitDate" type="submit">Submit</button>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="date-input"></label>
+                <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 text-quantico leading-tight focus:outline-none focus:shadow-outline" id="date-input" name="date" type="date" max="<%= new Date().toISOString().split('T')[0] %>"required>
+                <button class="bg-gray-700 hover:bg-blue-700 text-white font-quantico py-2 px-4 rounded" id="submitDate" type="submit">Submit</button>
             </form>
-        </section>
-    
-        <section class="bottom w-1/2">
-            <ul class="planetList">
-                <% for( let i = 0; i < planet.length; i++ ) { %>
-                    <li class="planetData max-w-md">
-                        <span><%= planet[i].title %> </span>
-                        <span><%= planet[i].userDate %> </span>
-                        <img src="<%= planet[i].img %>"  alt="planet image">
-                        <p><%= planet[i].explanation %> </p>
-                        <form action="/nasaData" method="POST">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="id" value="<%= planet[i]['_id'] %>" >
-                            <button id="delete">Remove APOD</button>
-                        </form>
-                    </li>
-                <% } %>
-            </ul>
-        </section>
+            </section>
+            <section class="bottom flex justify-center item-center">
+                <ul class="planetList lg: flex  flex-wrap justify-evenly">
+                    <% for( let i = planet.length - 1 ; i >= 0; i-- ) { %>
+                        <li class="planetData max-w-md">
 
-</main>
+                            <section class="my-5">
+                                <img class="rounded-lg" src="<%= planet[i].img %>"  alt="planet image">
+                                <div class="my-2">
+                                    <h3 class="font-orbitron text-sm"><%= planet[i].title %> </h3>
+                                    <h3 class="font-orbitron text-sm"><%= planet[i].userDate %> </h3>
+                                </div>
+                                <div class="text-center border-b border-gray-500 lg: border-none ">
+                                    <p class="font-roboto-mono px-5 py-2 text-left"><%= planet[i].explanation %> </p>
+                                    <form action="/nasaData" method="POST">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="id" value="<%= planet[i]['_id'] %>" >
+                                        <button class="bg-red-600 hover:bg-blue-700 text-white text-sm font-quantico py-1 px-2 rounded mb-4" type="submit" id="delete">Remove APOD</button>
+                                </div>
+                                </form>
+                            </section>
+                        </li>
+                    <% } %>
+                </ul>
+            </section>
+    </main>
 </body>
 </html>
