@@ -50,13 +50,7 @@ async function start() {
 
   // Perform further operations here
 
-  client.close()
-}
-
-start().catch(console.error)
-
-
-    /**
+   /**
      * use ejs and set it as the main view engine 
      * 
      * app.set() sets the Express application settings 
@@ -186,4 +180,10 @@ start().catch(console.error)
     app.listen( process.env.PORT, () => {
         console.log('yo mama')
     })
+    client.close()
+}
+
+start().catch(console.error)
+
+
 
