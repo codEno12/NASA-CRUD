@@ -41,10 +41,20 @@ const MONGODB_URL = process.env.MONGODB_URL
 if (!MONGODB_URL) throw new Error('WHERE YOUR LINK AT')
 const client = new MongoClient(MONGODB_URL)
 
-client.connect().then( client => { 
-    console.log( 'connectd to the client' )
-    const db = client.db( 'NasaAPI' )
-    const nasaCollection = db.collection('nasaData')
+
+async function start() {
+  const client = await MongoClient.connect(uri, { useNewUrlParser: true })
+  console.log('connected to the client')
+  const db = client.db('NasaAPI')
+  const nasaCollection = db.collection('nasaData')
+
+  // Perform further operations here
+
+  client.close()
+}
+
+start().catch(console.error)
+
 
     /**
      * use ejs and set it as the main view engine 
@@ -176,4 +186,4 @@ client.connect().then( client => {
     app.listen( process.env.PORT, () => {
         console.log('yo mama')
     })
-})
+
