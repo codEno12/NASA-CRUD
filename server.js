@@ -173,7 +173,7 @@ client.connect().then( client => {
         .catch(error => console.error(`Error: ${error}`))
     })
 
-    app.listen( PORT, () => {
+    app.listen( process.env.PORT, () => {
         console.log('yo mama')
     })
 })
