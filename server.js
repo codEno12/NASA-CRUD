@@ -41,15 +41,12 @@ const MONGODB_URL = process.env.MONGODB_URL
 if (!MONGODB_URL) throw new Error('WHERE YOUR LINK AT')
 const client = new MongoClient(MONGODB_URL)
 
-(async function () {
-  try {
-    const client = await MongoClient.connect(dbUrl, { useUnifiedTopology: true })
-    console.log('connected to database')
-    const db = client.db(dbName)
+client.connect().then( client => { 
+    console.log( 'connectd to the client' )
+    const db = client.db( 'NasaAPI' )
     const nasaCollection = db.collection('nasaData')
-    
-    // ... the rest of the code
-        /**
+
+    /**
      * use ejs and set it as the main view engine 
      * 
      * app.set() sets the Express application settings 
@@ -176,12 +173,7 @@ const client = new MongoClient(MONGODB_URL)
         .catch(error => console.error(`Error: ${error}`))
     })
 
-
-    app.listen(port, () => {
-      console.log(`Listening on port ${port}`)
+    app.listen( PROCESS.env.PORT, () => {
+        console.log('yo mama')
     })
-  } catch (err) {
-    console.error(err)
-  }
-})()
-
+})
