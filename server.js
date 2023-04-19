@@ -129,7 +129,7 @@ app.get('/', async (req, res) => {
      */
     nasaCollection.find().toArray()
     .then ( results => {
-        // console.log(results)
+        console.log(results)
         /**
          * res.render('index.ejs, {})
         * the object can be empty and it will still 
@@ -148,7 +148,7 @@ app.get('/', async (req, res) => {
  * inside it. 
  */
 app.post('/nasaData', async (req, res) => {
-    console.log("hi")
+    console.log("post")
     const apiKey = process.env.API_KEY
     const selectedDate = req.body.date
     const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${selectedDate}`)
